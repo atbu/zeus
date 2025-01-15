@@ -4,7 +4,7 @@
     {% if posts %}
         <ul>
         {% for p in posts %}
-            <li><a href="{% url 'post_detail' p.uniqueId %}">{{ p.content }}</a> (by <a href="{% url 'user_detail' p.author.username %}">{{ p.author.username }}</a>)</li>
+            <li><a href="{% url 'post_detail' p.uniqueId %}">{{ p.content }}</a> (by <a href="{% url 'user_detail' p.author.username %}">{{ p.author.username }}</a>) - {{ p.short_age }}</li>
         {% endfor %}
         </ul>
     {% else %}
