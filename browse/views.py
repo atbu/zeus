@@ -1,8 +1,12 @@
 from django.contrib.auth import get_user_model
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 
+from .forms import NewPostForm
 from .models import Post
+
+import datetime
 
 # Create your views here.
 def index(request):
@@ -28,3 +32,17 @@ def user_detail(request, username):
     "posts": posts,
   }
   return render(request, "browse/user_detail.html", context)
+
+@login_required
+def new_post(request):
+  if request.method == "POST":
+    form = NewPostForm(request.POST)
+    if(form.is_valid()):
+      new_post = form.save(commit=False)
+      new_post.author = request.user
+      new_post.save()
+      return HttpResponseRedirect('/')
+  else:
+    form = NewPostForm()
+
+  return render(request, "new_post.html", {"form": form,})
