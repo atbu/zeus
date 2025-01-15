@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 
+from .forms import NewPostForm
 from .models import Post
 
 # Create your views here.
@@ -28,3 +29,10 @@ def user_detail(request, username):
     "posts": posts,
   }
   return render(request, "browse/user_detail.html", context)
+
+def new_post(request):
+  if request.method == "POST":
+    form = NewPostForm(request.POST)
+    if(form.is_valid()):
+      new_post = form.save()
+      new_post.save()
