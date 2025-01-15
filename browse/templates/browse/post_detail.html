@@ -1,2 +1,2 @@
 <h3>{{ post.content }}</h2>
-<h2>{{ post.author.username }}</h2>
+<h2><a href="{% url 'user_detail' post.author.username %}">{{ post.author.username }}</a></h2>
