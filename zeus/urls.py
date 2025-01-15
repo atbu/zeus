@@ -18,9 +18,18 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
 
+from django.contrib.auth import views as auth_views
+
 urlpatterns = [
     path('', RedirectView.as_view(url='browse/', permanent=True)),
     path('admin/', admin.site.urls),
     path('browse/', include('browse.urls')),
     path('register/', include('register.urls')),
+
+    """
+    These are not contained within the 'register' app so the URLs are simply
+    'login/' and 'logout/' rather than 'register/login/' and 'register/logout/'.
+    """
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
