@@ -1,3 +1,9 @@
+{% if logged_in_as == "" %}
+    <h3>Currently not logged in. Click <a href="{% url 'login' %}">here</a> to login.</h3>
+{% else %}
+    <h3>Currently logged in as {{ logged_in_as }}. Click <a href="{% url 'logout' %}">here</a> to log out.</h3>
+{% endif %}
+
 {% if posts %}
     <ul>
     {% for p in posts %}

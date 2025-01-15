@@ -7,7 +7,14 @@ from .models import Post
 # Create your views here.
 def index(request):
   posts = Post.objects.order_by("-created_at")
-  return render(request, 'browse/index.html', {'posts': posts,})
+  logged_in_as = ""
+  if(request.user.is_authenticated):
+    logged_in_as = request.user.username
+  context = {
+    'posts': posts,
+    'logged_in_as': logged_in_as,
+  }
+  return render(request, 'browse/index.html', context)
 
 def post_detail(request, post_id):
   post = get_object_or_404(Post, pk=post_id)
