@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'browse.apps.BrowseConfig',
+    'register.apps.RegisterConfig',
 ]
 
 MIDDLEWARE = [
