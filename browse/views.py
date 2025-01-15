@@ -6,8 +6,6 @@ from django.shortcuts import get_object_or_404, render
 from .forms import NewPostForm
 from .models import Post
 
-import datetime
-
 # Create your views here.
 def index(request):
   posts = Post.objects.order_by("-created_at")
