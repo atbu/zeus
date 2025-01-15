@@ -1,15 +1,13 @@
-{% if logged_in_as == "" %}
-    <h3>Currently not logged in. Click <a href="{% url 'login' %}">here</a> to login.</h3>
-{% else %}
-    <h3>Currently logged in as {{ logged_in_as }}. Click <a href="{% url 'logout' %}">here</a> to log out.</h3>
-{% endif %}
+{% extends "base_generic.html" %}
 
-{% if posts %}
-    <ul>
-    {% for p in posts %}
-        <li><a href="{% url 'post_detail' p.uniqueId %}">{{ p.content }}</a> (by <a href="{% url 'user_detail' p.author.username %}">{{ p.author.username }}</a>)</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
+{% block content %}
+    {% if posts %}
+        <ul>
+        {% for p in posts %}
+            <li><a href="{% url 'post_detail' p.uniqueId %}">{{ p.content }}</a> (by <a href="{% url 'user_detail' p.author.username %}">{{ p.author.username }}</a>)</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No posts are available.</p>
+    {% endif %}
+{% endblock %}
