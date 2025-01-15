@@ -10,9 +10,9 @@
   </head>
   <body>
     {% if logged_in_as == "" %}
-      <h3>Currently not logged in. Click <a href="{% url 'login' %}">here</a> to login.</h3>
+      <div class="alert alert-primary">Currently not logged in. Click <a href="{% url 'login' %}">here</a> to login.</div>
     {% else %}
-      <h3>Currently logged in as {{ logged_in_as }}. Click <a href="{% url 'logout' %}">here</a> to log out.</h3>
+      <div class="alert alert-primary">Currently logged in as {{ logged_in_as }}. Click <a href="{% url 'logout' %}">here</a> to log out.</div>
     {% endif %}
     {% block content %}
       <!-- default content text (typically empty) -->
