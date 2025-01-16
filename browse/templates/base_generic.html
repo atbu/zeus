@@ -26,6 +26,7 @@
                   {{ logged_in_as }}
                 </a>
                 <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url 'user_detail' logged_in_as %}">My profile</a></li>
                   <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>
                 </ul>
               </li>
