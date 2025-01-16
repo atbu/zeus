@@ -32,3 +32,12 @@ class Like(models.Model):
   uniqueId = models.UUIDField(primary_key=True, default=uuid4, editable=False)
   liker = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+class ModeratorAction(models.Model):
+  ACTION_TYPES = (
+    ('deletion', 'Deletion'),
+  )
+  uniqueId = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+  moderator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+  type = models.CharField(max_length=20, choices=ACTION_TYPES)
+  post = models.ForeignKey(Post, on_delete=models.PROTECT)
