@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 
 from .forms import NewPostForm
-from .models import Post, Action
+from .models import Post, Action, Mute
 
 # Create your views here.
 def index(request):
@@ -56,6 +56,9 @@ def user_detail(request, username):
 
 @login_required
 def new_post(request):
+  if(Mute.objects.filter(target=request.user).exists()):
+    return HttpResponseRedirect('/browse/muted')
+  
   if request.method == "POST":
     form = NewPostForm(request.POST)
     if(form.is_valid()):
@@ -84,3 +87,6 @@ def delete_post(request, post_id):
     a.save()
     Post.objects.filter(pk=post_id).delete()
     return HttpResponseRedirect('/')
+  
+def muted(request):
+  return render(request, "muted.html", { 'logged_in_as': request.user.username })

@@ -50,3 +50,9 @@ class Action(models.Model):
   target = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="target_action_set", null=True)
   post = models.UUIDField()
   action_performed_at = models.DateTimeField(auto_now=True)
+
+class Mute(models.Model):
+  uniqueId = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+  target = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+  moderator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="moderator_mute_set")
+  reason = models.CharField(max_length=300)
