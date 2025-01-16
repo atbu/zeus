@@ -26,7 +26,7 @@ class Post(models.Model):
     if(post_age_hrs < 24):
       return str(post_age_hrs) + 'h'
     else:
-      return str(post_age_days) + 'days'
+      return str(post_age_days) + 'd'
 
 class Like(models.Model):
   uniqueId = models.UUIDField(primary_key=True, default=uuid4, editable=False)
