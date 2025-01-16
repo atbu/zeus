@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 
 from .forms import NewPostForm
-from .models import Post, ModeratorAction
+from .models import Post, Action
 
 # Create your views here.
 def index(request):
@@ -75,8 +75,8 @@ def delete_post(request, post_id):
 
   # Check if they are a moderator.
   if(request.user.groups.filter(name="Moderators").exists()):
-    m = ModeratorAction(moderator=request.user, type='deletion', target=post.author, post=post_id)
-    m.save()
+    a = Action(user=request.user, type='deletion', scope='moderative', target=post.author, post=post_id)
+    a.save()
     Post.objects.filter(pk=post_id).delete()
     
     return HttpResponseRedirect('/')

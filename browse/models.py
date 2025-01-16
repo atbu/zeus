@@ -33,12 +33,20 @@ class Like(models.Model):
   liker = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
-class ModeratorAction(models.Model):
+class Action(models.Model):
   ACTION_TYPES = (
     ('deletion', 'Deletion'),
   )
+
+  ACTION_SCOPE = (
+    ('personal', 'Personal'),
+    ('moderative', 'Moderative'),
+  )
+
   uniqueId = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-  moderator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="moderator_moderatoraction_set")
+  user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="user_action_set")
   type = models.CharField(max_length=20, choices=ACTION_TYPES)
-  target = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="target_moderatoraction_set")
+  scope = models.CharField(max_length=20, choices=ACTION_SCOPE)
+  target = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="target_action_set", null=True)
   post = models.UUIDField()
+  action_performed_at = models.DateTimeField(auto_now=True)
