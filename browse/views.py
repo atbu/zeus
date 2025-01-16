@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 
 from .forms import NewPostForm
-from .models import Post
+from .models import Post, Action, Mute
 
 # Create your views here.
 def index(request):
@@ -28,9 +28,12 @@ def post_detail(request, post_id):
   if(request.user.is_authenticated):
     logged_in_as = request.user.username
 
+  is_user_moderator = request.user.groups.filter(name="Moderators").exists()
+
   context = {
     "post": post,
     "logged_in_as": logged_in_as,
+    "is_user_moderator": is_user_moderator,
   }
 
   return render(request, "browse/post_detail.html", context)
@@ -53,6 +56,9 @@ def user_detail(request, username):
 
 @login_required
 def new_post(request):
+  if(Mute.objects.filter(target=request.user).exists()):
+    return HttpResponseRedirect('/browse/muted')
+  
   if request.method == "POST":
     form = NewPostForm(request.POST)
     if(form.is_valid()):
@@ -64,3 +70,23 @@ def new_post(request):
     form = NewPostForm()
 
   return render(request, "new_post.html", {"form": form,})
+
+@login_required
+def delete_post(request, post_id):
+  post = Post.objects.get(pk=post_id)
+  # TODO: If user making request is author, they should also be allowed to delete
+
+  # Check if they are a moderator.
+  if(request.user.groups.filter(name="Moderators").exists()):
+    a = Action(user=request.user, type='deletion', scope='moderative', target=post.author, post=post_id)
+    a.save()
+    Post.objects.filter(pk=post_id).delete()
+    return HttpResponseRedirect('/')
+  elif(request.user == post.author):
+    a = Action(user=request.user, type='deletion', scope='personal', post=post_id)
+    a.save()
+    Post.objects.filter(pk=post_id).delete()
+    return HttpResponseRedirect('/')
+  
+def muted(request):
+  return render(request, "muted.html", { 'logged_in_as': request.user.username })
