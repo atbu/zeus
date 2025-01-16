@@ -27,7 +27,7 @@
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   {{ logged_in_as }}
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu dropdown-menu-end">
                   <li><a class="dropdown-item" href="{% url 'user_detail' logged_in_as %}">My profile</a></li>
                   <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>
                 </ul>
