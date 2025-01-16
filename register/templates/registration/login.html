@@ -7,13 +7,14 @@
     <title>Log in</title>
 </head>
 <body>
-    <h1>Log in</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Log in</button>
-        <input type="hidden" name="next" value="{{ next }}">
-    </form>
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Log in</button>
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </div>
 </body>
 </html>
 {% endblock %}
