@@ -28,9 +28,12 @@ def post_detail(request, post_id):
   if(request.user.is_authenticated):
     logged_in_as = request.user.username
 
+  is_user_moderator = request.user.groups.filter(name="Moderators").exists()
+
   context = {
     "post": post,
     "logged_in_as": logged_in_as,
+    "is_user_moderator": is_user_moderator,
   }
 
   return render(request, "browse/post_detail.html", context)
@@ -72,6 +75,8 @@ def delete_post(request, post_id):
 
   # Check if they are a moderator.
   if(request.user.groups.filter(name="Moderators").exists()):
-    Post.objects.filter(id=post_id).delete()
-    ModeratorAction.create(moderator=request.user, type='deletion', post=Post.objects.get(id=post_id))
+    m = ModeratorAction(moderator=request.user, type='deletion', target=post.author, post=post_id)
+    m.save()
+    Post.objects.filter(pk=post_id).delete()
+    
     return HttpResponseRedirect('/')

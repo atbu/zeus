@@ -3,4 +3,8 @@
 {% block content %}
   <h3>{{ post.content }}</h2>
   <h3>Posted by <a href="{% url 'user_detail' post.author.username %}">{{ post.author.username }}</a></h3>
+
+  {% if is_user_moderator %}
+    <a href="{% url 'delete_post' post.uniqueId %}" class="btn btn-danger" role="button">Delete</a>
+  {% endif %}
 {% endblock %}
