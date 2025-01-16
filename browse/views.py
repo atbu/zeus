@@ -78,5 +78,9 @@ def delete_post(request, post_id):
     a = Action(user=request.user, type='deletion', scope='moderative', target=post.author, post=post_id)
     a.save()
     Post.objects.filter(pk=post_id).delete()
-    
+    return HttpResponseRedirect('/')
+  elif(request.user == post.author):
+    a = Action(user=request.user, type='deletion', scope='personal', post=post_id)
+    a.save()
+    Post.objects.filter(pk=post_id).delete()
     return HttpResponseRedirect('/')
