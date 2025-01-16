@@ -14,15 +14,19 @@ class Post(models.Model):
   @property
   def short_age(self):
     post_age = datetime.datetime.now(datetime.timezone.utc) - self.created_at
-    post_age_secs = post_age.total_seconds()
+    post_age_secs = int(post_age.total_seconds())
+    post_age_mins = int(post_age_secs / 60)
+    post_age_hrs = int(post_age_mins / 60)
+    post_age_days = int(post_age_hrs / 24)
+    
     if(post_age_secs < 60):
-      return str(int(post_age_secs)) + 's'
-    if(post_age_secs / 60 < 60):
-      return str(int(post_age_secs / 60)) + 'm'
-    if(post_age_secs / 60 / 24 < 24):
-      return str(int(post_age_secs / 60 / 24)) + 'h'
+      return str(post_age_secs) + 's'
+    if(post_age_mins < 60):
+      return str(post_age_mins) + 'm'
+    if(post_age_hrs < 24):
+      return str(post_age_hrs) + 'h'
     else:
-      return str(int(post_age_secs / 60 / 24 / 365)) + 'days'
+      return str(post_age_days) + 'days'
 
 class Like(models.Model):
   uniqueId = models.UUIDField(primary_key=True, default=uuid4, editable=False)
