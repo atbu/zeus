@@ -2,8 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 
 class UserRegistrationForm(forms.ModelForm):
-  password = forms.CharField(widget=forms.PasswordInput)
-  password2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
+  password = forms.CharField(widget=forms.PasswordInput) # password
+  password2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password') # confirm password
 
   class Meta:
     model = User

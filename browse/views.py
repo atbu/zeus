@@ -14,9 +14,12 @@ def index(request):
   if(request.user.is_authenticated):
     logged_in_as = request.user.username
 
+  is_user_moderator = request.user.groups.filter(name="Moderators").exists()
+
   context = {
     'posts': posts,
     'logged_in_as': logged_in_as,
+    'is_user_moderator': is_user_moderator,
   }
 
   return render(request, 'browse/index.html', context)

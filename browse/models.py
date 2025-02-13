@@ -4,13 +4,14 @@ from django.db import models
 import datetime
 from uuid import uuid4
 
-# Create your models here.
+# A model representing a single post.
 class Post(models.Model):
   uniqueId = models.UUIDField(primary_key=True, default=uuid4, editable=False)
   content = models.CharField(max_length=280)
   author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   created_at = models.DateTimeField(auto_now=True)
 
+  # Represents the short post age displayed on the home page.
   @property
   def short_age(self):
     post_age = datetime.datetime.now(datetime.timezone.utc) - self.created_at
@@ -28,11 +29,13 @@ class Post(models.Model):
     else:
       return str(post_age_days) + 'd'
 
+# A model representing a like on a specific post referenced as a foreign key.
 class Like(models.Model):
   uniqueId = models.UUIDField(primary_key=True, default=uuid4, editable=False)
   liker = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
+# A model representing a moderator action.
 class Action(models.Model):
   ACTION_TYPES = (
     ('deletion', 'Deletion'),
@@ -51,6 +54,7 @@ class Action(models.Model):
   post = models.UUIDField()
   action_performed_at = models.DateTimeField(auto_now=True)
 
+# A model representing a Mute - a Mute is created whenever a user is muted.
 class Mute(models.Model):
   uniqueId = models.UUIDField(primary_key=True, default=uuid4, editable=False)
   target = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
