@@ -12,7 +12,7 @@
 
   {% if is_user_moderator or logged_in_as == post.author.username %}
     <a href="{% url 'delete_post' post.uniqueId %}" class="btn btn-danger" role="button">Delete</a>
-    <h1>People who have liked this: </h1>
+    <h1>People who have liked this ({{ likes.count }}):</h1>
     <ul>
       {% for l in likes %}
         <li><a href={% url 'user_detail' l.liker.username %}>{{ l.liker.username }}</a></li>
