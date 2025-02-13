@@ -4,6 +4,12 @@
   <h3>{{ post.content }}</h2>
   <h3>Posted by <a href="{% url 'user_detail' post.author.username %}">{{ post.author.username }}</a></h3>
 
+  {% if has_user_liked_this %}
+    <h1>You liked this post! Click <a href="{% url 'toggle_like_post' post.uniqueId %}">here</a> to unlike.</h1>
+  {% else %}
+    <h1>You haven't liked this post. Click <a href="{% url 'toggle_like_post' post.uniqueId %}">here</a> to like.</h1>
+  {% endif %}
+
   {% if is_user_moderator or logged_in_as == post.author.username %}
     <a href="{% url 'delete_post' post.uniqueId %}" class="btn btn-danger" role="button">Delete</a>
   {% endif %}

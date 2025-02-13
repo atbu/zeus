@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 
 from .forms import NewPostForm
-from .models import Post, Action, Mute
+from .models import Post, Action, Mute, Like
 
 # Create your views here.
 def index(request):
@@ -33,10 +33,13 @@ def post_detail(request, post_id):
 
   is_user_moderator = request.user.groups.filter(name="Moderators").exists()
 
+  has_user_liked_this = Like.objects.filter(liker=request.user, post=Post.objects.filter(pk=post_id).first()).exists()
+
   context = {
     "post": post,
     "logged_in_as": logged_in_as,
     "is_user_moderator": is_user_moderator,
+    "has_user_liked_this": has_user_liked_this,
   }
 
   return render(request, "browse/post_detail.html", context)
@@ -90,6 +93,20 @@ def delete_post(request, post_id):
     a.save()
     Post.objects.filter(pk=post_id).delete()
     return HttpResponseRedirect('/')
+  
+@login_required
+def toggle_like_post(request, post_id):
+  post = Post.objects.get(pk=post_id)
+  liker = request.user
+
+  if(Like.objects.filter(post=post, liker=liker).exists()):
+    Like.objects.get(post=post, liker=liker).delete()
+  else:
+    new_like = Like.objects.create(liker=liker, post=post)
+    new_like.save()
+
+  return post_detail(request, post_id)
+    
   
 def muted(request):
   return render(request, "muted.html", { 'logged_in_as': request.user.username })
