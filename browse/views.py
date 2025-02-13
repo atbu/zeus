@@ -16,10 +16,13 @@ def index(request):
 
   is_user_moderator = request.user.groups.filter(name="Moderators").exists()
 
-  user_likes = Like.objects.filter(liker=request.user)
-  liked_post_ids = []
-  for like in user_likes:
-    liked_post_ids.append(like.post.uniqueId)
+  if(logged_in_as == ""):
+    liked_post_ids = []
+  else:
+    user_likes = Like.objects.filter(liker=request.user)
+    liked_post_ids = []
+    for like in user_likes:
+      liked_post_ids.append(like.post.uniqueId)
 
   context = {
     'posts': posts,
