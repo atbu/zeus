@@ -16,10 +16,16 @@ def index(request):
 
   is_user_moderator = request.user.groups.filter(name="Moderators").exists()
 
+  user_likes = Like.objects.filter(liker=request.user)
+  liked_post_ids = []
+  for like in user_likes:
+    liked_post_ids.append(like.post.uniqueId)
+
   context = {
     'posts': posts,
     'logged_in_as': logged_in_as,
     'is_user_moderator': is_user_moderator,
+    'liked_post_ids': liked_post_ids,
   }
 
   return render(request, 'browse/index.html', context)
@@ -98,7 +104,7 @@ def delete_post(request, post_id):
     return HttpResponseRedirect('/')
   
 @login_required
-def toggle_like_post(request, post_id):
+def toggle_like_post(request, post_id, sender):
   post = Post.objects.get(pk=post_id)
   liker = request.user
 
@@ -108,8 +114,10 @@ def toggle_like_post(request, post_id):
     new_like = Like.objects.create(liker=liker, post=post)
     new_like.save()
 
-  return post_detail(request, post_id)
-    
-  
+  if(sender == 'post_detail'):
+    return post_detail(request, post_id)
+  else:
+    return index(request)
+
 def muted(request):
   return render(request, "muted.html", { 'logged_in_as': request.user.username })

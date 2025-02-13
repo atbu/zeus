@@ -1,8 +1,13 @@
+from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.db import models
 
+from django import template
+
 import datetime
 from uuid import uuid4
+
+register = template.Library()
 
 # A model representing a single post.
 class Post(models.Model):
@@ -28,6 +33,9 @@ class Post(models.Model):
       return str(post_age_hrs) + 'h'
     else:
       return str(post_age_days) + 'd'
+  
+  def liked_by(self):
+    return Like.objects.filter(post=self)
 
 # A model representing a like on a specific post referenced as a foreign key.
 class Like(models.Model):
