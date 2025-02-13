@@ -35,11 +35,14 @@ def post_detail(request, post_id):
 
   has_user_liked_this = Like.objects.filter(liker=request.user, post=Post.objects.filter(pk=post_id).first()).exists()
 
+  likes = Like.objects.filter(post=Post.objects.get(uniqueId=post_id))
+
   context = {
     "post": post,
     "logged_in_as": logged_in_as,
     "is_user_moderator": is_user_moderator,
     "has_user_liked_this": has_user_liked_this,
+    "likes": likes,
   }
 
   return render(request, "browse/post_detail.html", context)
