@@ -33,6 +33,11 @@ class Post(models.Model):
       return str(post_age_hrs) + 'h'
     else:
       return str(post_age_days) + 'd'
+    
+  @property
+  def like_count(self):
+    likes = Like.objects.filter(post=self)
+    return likes.count
   
   def liked_by(self):
     return Like.objects.filter(post=self)
