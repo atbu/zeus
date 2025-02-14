@@ -127,6 +127,16 @@ def toggle_like_post(request, post_id, sender):
     return post_detail(request, post_id)
   else:
     return index(request)
+  
+@login_required
+def post_reply(request, post_id, content):
+  post = Post.objects.get(pk=post_id)
+  replier = request.user
+
+  reply = Post.objects.create(content=content, author=replier, parent=post)
+  reply.save()
+
+  return post_detail(request, post_id)
 
 def muted(request):
   return render(request, "muted.html", { 'logged_in_as': request.user.username })
