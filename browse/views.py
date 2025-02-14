@@ -64,10 +64,13 @@ def user_detail(request, username):
   if(request.user.is_authenticated):
     logged_in_as = request.user.username
 
+  is_user_moderator = request.user.groups.filter(name="Moderators").exists()
+
   context = {
     "user": user,
     "posts": posts,
     "logged_in_as": logged_in_as,
+    "is_user_moderator": is_user_moderator,
   }
 
   return render(request, "browse/user_detail.html", context)
@@ -76,6 +79,9 @@ def user_detail(request, username):
 def new_post(request):
   if(Mute.objects.filter(target=request.user).exists()):
     return HttpResponseRedirect('/browse/muted')
+  
+  logged_in_as = request.user.username
+  is_user_moderator = request.user.groups.filter(name="Moderators").exists()
   
   if request.method == "POST":
     form = NewPostForm(request.POST)
@@ -87,7 +93,7 @@ def new_post(request):
   else:
     form = NewPostForm()
 
-  return render(request, "new_post.html", {"form": form,})
+  return render(request, "new_post.html", {"form": form, "logged_in_as": logged_in_as, "is_user_moderator": is_user_moderator,})
 
 @login_required
 def delete_post(request, post_id):
