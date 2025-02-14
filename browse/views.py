@@ -98,7 +98,6 @@ def new_post(request):
 @login_required
 def delete_post(request, post_id):
   post = Post.objects.get(pk=post_id)
-  # TODO: If user making request is author, they should also be allowed to delete
 
   # Check if they are a moderator.
   if(request.user.groups.filter(name="Moderators").exists()):
