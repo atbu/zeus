@@ -8,7 +8,7 @@ from .models import Post, Action, Mute, Like
 
 # Create your views here.
 def index(request):
-  posts = Post.objects.order_by("-created_at")
+  posts = Post.objects.filter(parent=None).order_by("-created_at")
 
   logged_in_as = ""
   if(request.user.is_authenticated):
