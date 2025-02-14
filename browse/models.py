@@ -15,6 +15,7 @@ class Post(models.Model):
   content = models.CharField(max_length=280)
   author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   created_at = models.DateTimeField(auto_now=True)
+  parent = models.ForeignKey("Post", on_delete=models.CASCADE, null=True)
 
   # Represents the short post age displayed on the home page.
   @property
