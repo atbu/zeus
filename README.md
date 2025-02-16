@@ -1,6 +1,6 @@
 ## zeus
 
-A work-in-progress Twitter/X clone made in Python/Django.
+A Twitter/X clone made in Python/Django.
 
 ### Installation (Mac-specific)
 
