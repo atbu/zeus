@@ -34,6 +34,7 @@ def index(request):
 
   return render(request, 'browse/index.html', context)
 
+@login_required
 def post_detail(request, post_id):
   post = get_object_or_404(Post, pk=post_id)
 
@@ -57,6 +58,7 @@ def post_detail(request, post_id):
 
   return render(request, "browse/post_detail.html", context)
 
+@login_required
 def user_detail(request, username):
   user = get_object_or_404(get_user_model(), username=username)
   posts = Post.objects.filter(author__username=username)
