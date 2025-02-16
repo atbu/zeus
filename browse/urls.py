@@ -10,5 +10,6 @@ urlpatterns = [
   path('muted/', views.muted, name='muted'), # user is redirected to this page if they are muted and cannot post
   path('toggle_like_post/<uuid:post_id>/<str:sender>', views.toggle_like_post, name='toggle_like_post'), # like/unlike a post
   path('post_reply/<uuid:post_id>/<str:content>', views.post_reply, name='post_reply'), # post a reply to a post
-  path('delete_own_user/', views.delete_own_user, name='delete_own_user') # delete own user
+  path('delete_own_user/', views.delete_own_user, name='delete_own_user'), # delete own user
+  path('account_settings/', views.account_settings, name='account_settings')
 ]

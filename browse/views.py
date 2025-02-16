@@ -96,6 +96,12 @@ def new_post(request):
 
   return render(request, "new_post.html", {"form": form, "logged_in_as": logged_in_as, "is_user_moderator": is_user_moderator,})
 
+@login_required
+def account_settings(request):
+  logged_in_as = request.user.username
+  is_user_moderator = request.user.groups.filter(name="Moderators").exists()
+  
+  return render(request, "account_settings.html", {"logged_in_as": logged_in_as, "is_user_moderator": is_user_moderator,})
 
 @login_required
 def delete_post(request, post_id):
