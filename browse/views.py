@@ -139,5 +139,15 @@ def post_reply(request, post_id, content):
 
   return post_detail(request, post_id)
 
+@login_required
+def delete_own_user(request):
+  user = request.user
+  user.is_active = False
+  user.save()
+  Post.objects.filter(author=user).delete()
+  Like.objects.filter(liker=user).delete()
+  Mute.objects.filter(target=user).delete()
+  return HttpResponseRedirect(reverse('logout'))
+
 def muted(request):
   return render(request, "muted.html", { 'logged_in_as': request.user.username })
