@@ -1,0 +1,45 @@
+a{
+	text-decoration: none;
+}
+
+
+/*for the posts*/
+.card {
+	width: 65vw;
+	margin: auto;
+	margin-bottom: max(1vw, 1vh);
+	border-style: solid;
+	border-color: #FFBF00;
+	border-width: max(.15vw, .2vh);
+	text-decoration: none;
+}
+.card-subtitle, .card-subtitle a{
+	font-size: max(0.85vw, 1.5vh);
+	color: #666;
+}
+.card-subtitle a{
+	font-weight: bold;
+	color: #555;
+}
+.card-text, .card-text a{
+	font-size: max(1.25vw, 2vh);
+	color: #000;
+}
+.delete-post-button {
+	width: 100vw;
+	text-align: center;
+	margin-bottom: max(4vw, 4vh);
+}
+.btn-danger {
+	font-size: max(1.25vw, 2vh);
+}
+
+
+
+/*for mobile devices*/
+@media (max-width: 500px) {
+  .card {
+	width: 85vw;
+  }
+}
+
