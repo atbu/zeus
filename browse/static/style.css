@@ -25,10 +25,15 @@ a{
 	font-size: max(1.25vw, 2vh);
 	color: #000;
 }
-.delete-post-button {
+
+/*for manage post dropdown*/
+.manage-btn-dropdown {
 	width: 100vw;
 	text-align: center;
 	margin-bottom: max(4vw, 4vh);
+}
+.delete-item{
+	color: red;
 }
 .btn-danger {
 	font-size: max(1.25vw, 2vh);
