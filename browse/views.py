@@ -8,7 +8,7 @@ from .models import Post, Action, Mute, Like
 
 # Create your views here.
 def index(request):
-  posts = Post.objects.order_by("-created_at")
+  posts = Post.objects.filter(parent=None).order_by("-created_at")
 
   logged_in_as = ""
   if(request.user.is_authenticated):
@@ -98,7 +98,6 @@ def new_post(request):
 @login_required
 def delete_post(request, post_id):
   post = Post.objects.get(pk=post_id)
-  # TODO: If user making request is author, they should also be allowed to delete
 
   # Check if they are a moderator.
   if(request.user.groups.filter(name="Moderators").exists()):
@@ -127,6 +126,16 @@ def toggle_like_post(request, post_id, sender):
     return post_detail(request, post_id)
   else:
     return index(request)
+  
+@login_required
+def post_reply(request, post_id, content):
+  post = Post.objects.get(pk=post_id)
+  replier = request.user
+
+  reply = Post.objects.create(content=content, author=replier, parent=post)
+  reply.save()
+
+  return post_detail(request, post_id)
 
 def muted(request):
   return render(request, "muted.html", { 'logged_in_as': request.user.username })

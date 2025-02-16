@@ -8,5 +8,6 @@ urlpatterns = [
   path('new/', views.new_post, name='new_post'), # create a new post
   path('delete_post/<uuid:post_id>', views.delete_post, name='delete_post'), # delete a post
   path('muted/', views.muted, name='muted'), # user is redirected to this page if they are muted and cannot post
-  path('toggle_like_post/<uuid:post_id>/<str:sender>', views.toggle_like_post, name='toggle_like_post') # like/unlike a post
+  path('toggle_like_post/<uuid:post_id>/<str:sender>', views.toggle_like_post, name='toggle_like_post'), # like/unlike a post
+  path('post_reply/<uuid:post_id>/<str:content>', views.post_reply, name='post_reply'), # post a reply to a post
 ]
