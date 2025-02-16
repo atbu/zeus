@@ -96,6 +96,12 @@ def new_post(request):
 
   return render(request, "new_post.html", {"form": form, "logged_in_as": logged_in_as, "is_user_moderator": is_user_moderator,})
 
+@login_required
+def account_settings(request):
+  logged_in_as = request.user.username
+  is_user_moderator = request.user.groups.filter(name="Moderators").exists()
+  
+  return render(request, "account_settings.html", {"logged_in_as": logged_in_as, "is_user_moderator": is_user_moderator,})
 
 @login_required
 def delete_post(request, post_id):
@@ -138,6 +144,16 @@ def post_reply(request, post_id, content):
   reply.save()
 
   return post_detail(request, post_id)
+
+@login_required
+def delete_own_user(request):
+  user = request.user
+  user.is_active = False
+  user.save()
+  Post.objects.filter(author=user).delete()
+  Like.objects.filter(liker=user).delete()
+  Mute.objects.filter(target=user).delete()
+  return HttpResponseRedirect(reverse('logout'))
 
 def muted(request):
   return render(request, "muted.html", { 'logged_in_as': request.user.username })

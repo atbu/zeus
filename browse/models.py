@@ -2,12 +2,8 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.db import models
 
-from django import template
-
 import datetime
 from uuid import uuid4
-
-register = template.Library()
 
 # A model representing a single post.
 class Post(models.Model):
