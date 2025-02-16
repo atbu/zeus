@@ -19,13 +19,24 @@ from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from django.views.generic import RedirectView
 
-urlpatterns = [
-    path('', RedirectView.as_view(url='browse/', permanent=True)),
-    path('admin/', admin.site.urls),
-    path('browse/', include('browse.urls')),
-    path('register/', include('register.urls')),
+from browse.views import index, post_detail, user_detail, new_post, account_settings, delete_post, toggle_like_post, post_reply, delete_own_user, muted
+from register.views import register
 
-    # These are not contained within the 'register' app to avoid the URL being 'register/login/' etc.
+urlpatterns = [
+    path('admin/', admin.site.urls),
+
+    path('', index, name='index'),
+    path('browse/', index, name='index'),
+    path('p/<uuid:post_id>/', post_detail, name='post_detail'), # view details about an individual post
+    path('u/<str:username>/', user_detail, name='user_detail'), # view details about an individual user
+    path('new/', new_post, name='new_post'), # create a new post
+    path('delete_post/<uuid:post_id>', delete_post, name='delete_post'), # delete a post
+    path('muted/', muted, name='muted'), # user is redirected to this page if they are muted and cannot post
+    path('toggle_like_post/<uuid:post_id>/<str:sender>', toggle_like_post, name='toggle_like_post'), # like/unlike a post
+    path('post_reply/<uuid:post_id>/<str:content>', post_reply, name='post_reply'), # post a reply to a post
+    path('delete_own_user/', delete_own_user, name='delete_own_user'), # delete own user
+    path('account_settings/', account_settings, name='account_settings'),
+
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('password_change/', auth_views.PasswordChangeView.as_view(), name='password_change'),
@@ -34,4 +45,6 @@ urlpatterns = [
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+    path('register/', register, name='register')
 ]

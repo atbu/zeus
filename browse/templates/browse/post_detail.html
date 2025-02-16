@@ -5,31 +5,31 @@
   <link rel="stylesheet" href="{% static 'style.css' %}">
 
   <div class="card">
-  <div class="card-body">
-    <h2 class="card-subtitle mb-2">Posted by <a href="{% url 'user_detail' post.author.username %}">{{ post.author.username }}</a></h2>
-    <h1 class="card-text">{{ post.content }}</h1>
+    <div class="card-body">
+      <h2 class="card-subtitle mb-2">Posted by <a href="{% url 'user_detail' post.author.username %}">{{ post.author.username }}</a></h2>
+      <h1 class="card-text">{{ post.content }}</h1>
 
-    {% if has_user_liked_this %}
-    <span class="d-flex gap-1">
-        <a href="{% url 'toggle_like_post' post_id=post.uniqueId sender='post_detail' %}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FFBF00" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
-            </svg>
-        </a>
-        <p>{{ likes.count }}</p>
-    </span>
-    {% else %}
-    <span class="d-flex gap-1">
-        <a href="{% url 'toggle_like_post' post_id=post.uniqueId sender='post_detail' %}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FFBF00" class="bi bi-heart" viewBox="0 0 16 16">
-                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
-            </svg>
-        </a>
-        <p>{{ likes.count }}</p>
-    </span>
-    {% endif %}
+      {% if has_user_liked_this %}
+      <span class="d-flex gap-1">
+          <a href="{% url 'toggle_like_post' post_id=post.uniqueId sender='post_detail' %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FFBF00" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+              </svg>
+          </a>
+          <p>{{ likes.count }}</p>
+      </span>
+      {% else %}
+      <span class="d-flex gap-1">
+          <a href="{% url 'toggle_like_post' post_id=post.uniqueId sender='post_detail' %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FFBF00" class="bi bi-heart" viewBox="0 0 16 16">
+                  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+              </svg>
+          </a>
+          <p>{{ likes.count }}</p>
+      </span>
+      {% endif %}
     </div>
-    </div>
+  </div>
   {% if is_user_moderator or logged_in_as == post.author.username %}
     <div class="manage-btn-dropdown">
       <div class="btn-group">
