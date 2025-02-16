@@ -36,6 +36,11 @@ class Post(models.Model):
     likes = Like.objects.filter(post=self)
     return likes.count
   
+  @property
+  def reply_count(self):
+    replies = Post.objects.filter(parent=self)
+    return replies.count
+  
   def liked_by(self):
     return Like.objects.filter(post=self)
 
