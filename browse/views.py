@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
 from .forms import NewPostForm
 from .models import Post, Action, Mute, Like
@@ -95,6 +96,7 @@ def new_post(request):
 
   return render(request, "new_post.html", {"form": form, "logged_in_as": logged_in_as, "is_user_moderator": is_user_moderator,})
 
+
 @login_required
 def delete_post(request, post_id):
   post = Post.objects.get(pk=post_id)
@@ -110,7 +112,7 @@ def delete_post(request, post_id):
     a.save()
     Post.objects.filter(pk=post_id).delete()
     return HttpResponseRedirect('/')
-  
+
 @login_required
 def toggle_like_post(request, post_id, sender):
   post = Post.objects.get(pk=post_id)
@@ -123,10 +125,10 @@ def toggle_like_post(request, post_id, sender):
     new_like.save()
 
   if(sender == 'post_detail'):
-    return post_detail(request, post_id)
+    return HttpResponseRedirect(reverse('post_detail', args=[post.uniqueId]))
   else:
-    return index(request)
-  
+    return HttpResponseRedirect(reverse('index'))
+
 @login_required
 def post_reply(request, post_id, content):
   post = Post.objects.get(pk=post_id)
