@@ -31,9 +31,17 @@
     </div>
     </div>
   {% if is_user_moderator or logged_in_as == post.author.username %}
-  <div class="delete-post-button">
-    <a href="{% url 'delete_post' post.uniqueId %}" class="btn btn-danger" role="button">Delete Post</a>
-  </div>
+    <div class="btn-group">
+      <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Manage
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#" disabled>Edit</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="{% url 'delete_post' post.uniqueId %}">Delete</a></li>
+      </ul>
+    </div>
+
     <h1>People who have liked this ({{ likes.count }}):</h1>
     <ul>
       {% for l in likes %}
