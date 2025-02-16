@@ -25,7 +25,7 @@ a{
 	font-size: max(1.25vw, 2vh);
 	color: #000;
 }
-.delete-post-button {
+.btn-group {
 	width: 100vw;
 	text-align: center;
 	margin-bottom: max(4vw, 4vh);
